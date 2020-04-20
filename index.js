@@ -135,9 +135,9 @@ function AES_MixColumns_Inv(state) {
 
 function cryptAES(text, key) {
   AES_Init();
-  let t = text.split('');
+  let t = String(text).split('');
   t = t.map((el) => el.charCodeAt());
-  let k = [...key.split(''), ...Array(32 - key.length)];
+  let k = [...String(key).split(''), ...Array(32 - String(key).length)];
   k = k.map((el, i) => {
     if (el) return el.charCodeAt();
     return i;
@@ -145,14 +145,13 @@ function cryptAES(text, key) {
   AES_ExpandKey(k);
   AES_Encrypt(t, k);
   AES_Done();
-  console.log('crypt:', JSON.stringify(t));
   return t;
 }
 
 function decryptAES(text, key) {
   AES_Init();
   t = [...text];
-  let k = [...key.split(''), ...Array(32 - key.length)];
+  let k = [...String(key).split(''), ...Array(32 - String(key).length)];
   k = k.map((el, i) => {
     if (el) return el.charCodeAt();
     return i;
@@ -161,11 +160,32 @@ function decryptAES(text, key) {
   AES_Decrypt(t, k);
   AES_Done();
   const result = String.fromCharCode(...t);
-  console.log(result)
-  return result;
+  return result.replace(/\0/g, '');
 }
 
-const text = 'text';
-const key = 'key';
-const crypt = cryptAES(text, key);
-const decrypt = decryptAES(crypt, key);
+document.addEventListener('DOMContentLoaded', () => {
+  const textField = document.querySelector('#text');
+  const keyField = document.querySelector('#key');
+  const result = document.querySelector('#result');
+  const check = document.querySelector('#check');
+  document.addEventListener('keydown', (el) => {
+    result.innerText = '';
+    check.innerText = '';
+    if (el.keyCode === 13) {
+      let text;
+      let key = keyField.value;
+      try {
+        text = JSON.parse(textField.value);
+      } catch  {
+        text = textField.value;
+      }
+      if (!!key && (typeof text === 'string' || typeof text === 'number')) {
+        const crypt = cryptAES(text, key);
+        result.innerText = JSON.stringify(crypt);
+        check.innerText = decryptAES(crypt, key);
+      } else if (!!key && Object.prototype.toString.call(text).slice(8, -1) === 'Array') {
+        result.innerText = decryptAES(text, key);
+      };
+    }
+  });
+});

@@ -1,0 +1,11 @@
+{
+  "manifest_version": 2,
+  "name": "aes-encryption-extension",
+  "description": "simple aes encryption",
+  "version": "1.0",
+  "browser_action": {
+      "default_popup": "index.html"
+  },
+
+"icons": { "16": "lock.png", "48": "lock.png", "128": "lock.png" }
+}
