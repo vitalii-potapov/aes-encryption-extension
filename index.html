@@ -5,13 +5,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./index.js"></script>
   <title>AES Encryption</title>
+  <style>
+    body * { box-sizing: border-box; }
+    body {
+      width: 300px;
+      overflow: hidden;
+    }
+    form {
+      display: flex;
+      flex-flow: column;
+    }
+    input {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 5px 10px;
+    }
+    input,
+    input::placeholder,
+    .text { font-size: 18px; }
+    .text {
+      display: flex;
+      margin-bottom: 7px;
+      overflow: hidden;
+    }
+    .text strong {
+      margin-right: 0.2em;
+      user-select: none;
+    }
+    [role="button"] { cursor: pointer; }
+    .hide + span { background: #000000; }
+  </style>
 </head>
 <body>
   <form>
-    <input id="text" type="text" placeholder="text">
-    <input id="key" type="text" placeholder="key" maxlength="32">
+    <input id="text" placeholder="Text" type="password">
+    <input id="key" placeholder="Key" maxlength="32" type="password">
   </form>
-  <div><strong>Result:</strong> <span id="result"></span></div>
-  <div><strong>Check:</strong> <span id="check"></span></div>
+  <div class="text">
+    <strong class="show-result hide" role="button">Result:</strong> <span id="result" role="button"></span>
+  </div>
+  <div class="text">
+    <strong class="show-result hide" role="button">Check:</strong> <span id="check"></span>
+  </div>
 </body>
 </html>
